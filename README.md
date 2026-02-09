@@ -3,7 +3,7 @@
 **ระบบติดตามการออกกำลังกายสำหรับผู้ป่วยโรคหัวใจ (Cardiac Rehabilitation System)**
 Web-based application for monitoring and tracking exercise progress of cardiac rehabilitation patients.
 
-🌐 **Live Demo:** [https://cardiacrehabsystem.free.nf/](https://cardiacrehabsystem.free.nf/)
+🌐 **Live Demo:** [https://lazy-hats-juggle.loca.lt](https://lazy-hats-juggle.loca.lt) *(Temporary Link)*
 
 ---
 
@@ -40,65 +40,48 @@ Web-based application for monitoring and tracking exercise progress of cardiac r
 
 ## 🛠️ Technology Stack
 - **Frontend:** HTML5, CSS3 (Vanilla), JavaScript, Chart.js
-- **Backend:** PHP 7.4+ (PDO for Database)
-- **Database:** MySQL / MariaDB
-- **Hosting:** InfinityFree (Apache Server)
+- **Backend:** Node.js, Express.js
+- **Database:** MySQL
+- **Hosting:** Localhost (or Node.js supported hosting)
 
 ---
 
 ## 🚀 Installation (Local Development)
 
 ### Prerequisites
-- XAMPP (Apache + MySQL + PHP)
+- Node.js (v14+)
+- MySQL
 - Git
 
 ### Steps
 1. **Clone Repository**
    ```bash
-   git clone https://github.com/marnoch-352/web-project-.git
-   cd cardiac_final
+   git clone https://github.com/kornmj/projectwebnodejs.git
+   cd web-project-
    ```
 
 2. **Setup Database**
-   - Open **phpMyAdmin** (`http://localhost/phpmyadmin`)
-   - Create database named: `cardiac_rehab`
-   - Import `backend/complete_setup_for_hosting.sql`
+   - Import `backend/complete_setup_for_hosting.sql` to MySQL.
+   - Configure `backend/config/db.js` (or `db_config.js`) if needed.
 
-3. **Configure Connection**
-   - The system automatically detects `localhost` and uses default XAMPP credentials (`root` / empty password).
-   - Verify `backend/db_config.php` if you have custom settings.
+3. **Install & Run**
+   ```bash
+   cd backend
+   npm install
+   node server.js
+   ```
+   - Access: `http://localhost:3000`
 
-4. **Run Application**
-   - User Interface: `http://localhost/cardiac_final/frontend/index.html`
-   
----
+## ☁️ Deployment (Cloud Hosting)
 
-## ☁️ Deployment (Production / InfinityFree)
+This project can be easily deployed to any Node.js supported platform (e.g., Render, Railway, Heroku).
 
-This project is configured to run on **InfinityFree** hosting with a specific folder structure.
-
-### ⚙️ Environment Auto-Detection
-The `backend/db_config.php` file automatically switches database credentials:
-- **Localhost:** Uses XAMPP default settings.
-- **Production:** Uses InfinityFree credentials (host: `sql111.infinityfree.com`).
-
-### 📂 Server Folder Structure
-On the hosting server (`htdocs/`), the structure is slightly flattened to simplify URLs:
-```
-htdocs/
-├── backend/            # API & Config
-├── html/               # HTML pages (from frontend/html)
-├── css/                # Styles (from frontend/css)
-├── javascript/         # Scripts (from frontend/javascript)
-├── index.html          # Main Entry
-└── ...
-```
-
-### 🔁 User Management Workflow (Important!)
-Since the hosted database cannot be accessed remotely:
-1. **Add Users Locally:** Use `manage_users.php` on your local machine to add Doctors/Therapists.
-2. **Export SQL:** Export the `users` table from local phpMyAdmin (Data only).
-3. **Import to Server:** Import the SQL file to the production phpMyAdmin.
+1. **Push to GitHub**
+2. **Connect Repository to Hosting Service**
+3. **Configure Environment Variables:**
+   - `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
+4. **Build Command:** `npm install`
+5. **Start Command:** `node server.js`
 
 ---
 
@@ -120,9 +103,9 @@ Since the hosted database cannot be accessed remotely:
 
 ## 🔒 Security Features
 - **Privacy:** National IDs are masked in search results (e.g., `1-2345-678XX-XX-X`).
-- **Authentication:** Role-based access control (Doctor, Therapist, Patient).
-- **Protection:** SQL Injection prevention (Prepared Statements), XSS protection.
-- **Configuration:** Auto-adjusting redirects based on environment (`backend/api/login.php`).
+- **Authentication:** Role-based access control (Doctor, Therapist, Patient) via Express Sessions.
+- **Protection:** SQL Injection prevention (MySQL2 Prepared Statements), Password Hashing (Bcrypt).
+- **Configuration:** Environment-based database configuration (`backend/db_config.js`).
 
 ---
 **Last Updated:** February 9, 2026
