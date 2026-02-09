@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard - Cardiac Rehab</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+</head>
+
+<body style="min-height: 100vh; display: flex; flex-direction: column; background-color: #f5f5f5;">
+
+    <!-- Header -->
+    <div class="header-bg">
+        <h2 class="text-2xl font-bold" id="patientName">Patient Dashboard</h2>
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn btn-secondary" onclick="window.location.href='patient_search.html'">Back to
+                Search</button>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" style="flex: 1; padding: 3rem 1rem;">
+        <!-- Patient Info -->
+        <div class="staff-form" style="margin-bottom: 2rem;">
+            <h1 class="text-3xl font-bold text-primary-blue mb-2" style="text-align: center;">
+                <span id="displayPatientName">Loading...</span>
+            </h1>
+            <div style="text-align: center; color: #666;">
+                <p><strong>Phone:</strong> <span id="displayPhone">-</span></p>
+            </div>
+        </div>
+
+        <!-- Dashboard Options -->
+        <div class="card-grid" style="max-width: 900px; margin: 0 auto;">
+            <div class="card"
+                style="cursor: pointer; transition: transform 0.2s; text-align: center; padding: 3rem 2rem;"
+                onclick="goToRecord()" onmouseover="this.style.transform='translateY(-5px)'"
+                onmouseout="this.style.transform=''">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">📝</div>
+                <h2 class="text-2xl font-bold text-primary-blue">บันทึกการออกกำลังกาย</h2>
+                <p style="color: #666;">Record Exercise Session</p>
+            </div>
+
+            <div class="card"
+                style="cursor: pointer; transition: transform 0.2s; text-align: center; padding: 3rem 2rem;"
+                onclick="goToHistory()" onmouseover="this.style.transform='translateY(-5px)'"
+                onmouseout="this.style.transform=''">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+                <h2 class="text-2xl font-bold text-primary-blue">ประวัติการออกกำลังกาย</h2>
+                <p style="color: #666;">Exercise History</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-column">
+                <img src="../images/logo.png" alt="Ram Hospital" class="footer-logo">
+                <div class="footer-address">
+                    <p>บริษัท โรงพยาบาล รามคำแหง จำกัด (มหาชน) 436</p>
+                    <p>ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ กรุงเทพ 10240</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let patientId = null;
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            patientId = urlParams.get('patient_id');
+
+            if (!patientId) {
+                alert('No patient selected');
+                window.location.href = 'patient_search.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/get_patient?patient_id=${patientId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('displayPatientName').textContent =
+                        `${data.patient.first_name} ${data.patient.last_name}`;
+                    document.getElementById('displayPhone').textContent = data.patient.phone;
+                    document.getElementById('patientName').textContent =
+                        `${data.patient.first_name} ${data.patient.last_name}`;
+                } else {
+                    alert('Failed to load patient');
+                    window.location.href = 'patient_search.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred');
+            }
+        });
+
+        function goToRecord() {
+            window.location.href = `record_exercise.html?patient_id=${patientId}`;
+        }
+
+        function goToHistory() {
+            window.location.href = `exercise_history.html?patient_id=${patientId}`;
+        }
+
+        function logout() {
+            fetch('/api/logout').then(() => {
+                window.location.href = 'login.html';
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile - Cardiac Rehab</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+    <style>
+        .profile-section {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+
+        .profile-image-container {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .profile-img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-info {
+            flex: 2;
+            text-align: left;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--primary-blue);
+            width: 150px;
+            flex-shrink: 0;
+            text-align: right;
+            padding-right: 1rem;
+        }
+
+        .info-value {
+            color: var(--text-dark);
+            flex: 1;
+        }
+
+        /* Schedule Grid */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .schedule-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .day-body {
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .time-text {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .location-text {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-section {
+                flex-direction: column-reverse;
+                align-items: center;
+            }
+
+            .info-label {
+                text-align: left;
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body style="background-color: #f9f9f9;">
+
+
+    <div class="dashboard-container">
+
+        <div class="top-bar">
+            <div class="user-profile">
+                <h2 class="text-2xl font-bold text-primary-blue">ข้อมูลแพทย์ (Doctor Profile)</h2>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-secondary btn-sm" onclick="window.history.back()">go back</button>
+            </div>
+        </div>
+
+        <div class="card" style="padding: 2rem;">
+            <!-- Profile Info Section -->
+            <div class="profile-section">
+                <div class="profile-info">
+                    <h1 class="text-2xl font-bold text-primary-blue mb-2"
+                        style="border-bottom: 2px solid var(--primary-blue); display: inline-block; margin-bottom: 1.5rem;">
+                        SITHA PHONGPHIBOOL, PhD, ACSM-CEP</h1>
+
+                    <div class="info-row">
+                        <div class="info-label">Specialty</div>
+                        <div class="info-value">Exercise Physiology.</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Language</div>
+                        <div class="info-value">Thai, English</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Qualifications</div>
+                        <div class="info-value">
+                            Ph.D., (Sports Science), Chulalongkorn University.<br>
+                            M.S., (Cardiopulmonary Rehabilitation), University of Pittsburgh.<br>
+                            B.S., (Exercise Science), University of Pittsburgh.
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Certificate</div>
+                        <div class="info-value">Clinical Exercise Physiologist/Specialist (ACSM-CEP)</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Other Certificate</div>
+                        <div class="info-value">Clinical and Performance Cardiopulmonary Exercise Testing. (Harbor-UCLA
+                            Medical Center)</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Special Clinical</div>
+                        <div class="info-value">Exercise Rehabilitation in Heart and Lung Diseases. Exercise Testing and
+                            Prescription. Exercise in Clinical Populations. Athletic Training and Performance Testing.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-image-container">
+                    <img src="../images/Sitha.jpg" alt="Dr. Sitha" class="profile-img">
+                </div>
+            </div>
+
+            <!-- Schedule Section -->
+            <h3 class="text-xl font-bold text-primary-blue mt-3 mb-1"
+                style="border-bottom: 1px dashed #ccc; padding-bottom: 0.5rem;">Schedule</h3>
+
+            <div class="schedule-grid">
+                <!-- Mon -->
+                <div class="schedule-card">
+                    <div class="day-header">Mon.</div>
+                    <div class="day-body">
+                        <span class="time-text">08:00 - 15:00</span>
+                        <div class="location-text">Building 3 Floor 10 (Cardiac Rehabilitation Department)</div>
+                    </div>
+                </div>
+                <!-- Tue -->
+                <div class="schedule-card">
+                    <div class="day-header">Tue.</div>
+                    <div class="day-body">
+                        <span class="time-text">08:00 - 15:00</span>
+                        <div class="location-text">Building 3 Floor 10 (Cardiac Rehabilitation Department)</div>
+                    </div>
+                </div>
+                <!-- Wed -->
+                <div class="schedule-card">
+                    <div class="day-header">Wed.</div>
+                    <div class="day-body">
+                        <span class="time-text">08:00 - 15:00</span>
+                        <div class="location-text">Building 3 Floor 10 (Cardiac Rehabilitation Department)</div>
+                    </div>
+                </div>
+                <!-- Thu -->
+                <div class="schedule-card">
+                    <div class="day-header">Thu.</div>
+                    <div class="day-body">
+                        <span class="time-text">08:00 - 15:00</span>
+                        <div class="location-text">Building 3 Floor 10 (Cardiac Rehabilitation Department)</div>
+                    </div>
+                </div>
+                <!-- Fri -->
+                <div class="schedule-card">
+                    <div class="day-header">Fri.</div>
+                    <div class="day-body">
+                        <span class="time-text">08:00 - 15:00</span>
+                        <div class="location-text">Building 3 Floor 10 (Cardiac Rehabilitation Department)</div>
+                    </div>
+                </div>
+                <!-- Sat -->
+                <div class="schedule-card">
+                    <div class="day-header">Sat.</div>
+                    <div class="day-body">
+                        <span class="time-text">08:00 - 12:00</span>
+                        <div class="location-text">Building 3 Floor 10 (Cardiac Rehabilitation Department)</div>
+                    </div>
+                </div>
+                <!-- Sun -->
+                <div class="schedule-card">
+                    <div class="day-header">Sun.</div>
+                    <div class="day-body">
+                        <span class="time-text" style="color: #999;">Unavailable</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <!-- Column 1: Logo & Address -->
+            <div class="footer-column">
+                <img src="../images/logo.png" alt="Ram Hospital" class="footer-logo">
+                <div class="footer-address">
+                    <p>บริษัท โรงพยาบาล รามคำแหง จำกัด (มหาชน) 436</p>
+                    <p>ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ</p>
+                    <p>กรุงเทพ 10240</p>
+                </div>
+            </div>
+
+            <!-- Column 2: Additional Services -->
+            <div class="footer-column">
+                <h3 class="footer-title">บริการเพิ่มเติม</h3>
+                <ul class="footer-links">
+                    <li><a href="#">สำหรับพนักงาน</a></li>
+                    <li><a href="#">คำชม</a></li>
+                    <li><a href="#">เอกสาร</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact Channels -->
+            <div class="footer-column">
+                <h3 class="footer-title">ช่องทางติดต่ออื่นๆ</h3>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

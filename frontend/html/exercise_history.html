@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise History - Cardiac Rehab</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body style="background-color: #f5f5f5;">
+
+    <div class="header-bg">
+        <h2 id="headerTitle">Exercise History</h2>
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn btn-secondary" onclick="goBack()" id="backBtn">Back</button>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 2rem 1rem; max-width: 1200px;">
+        <!-- Patient Info -->
+        <div class="staff-form" style="margin-bottom: 1rem; padding: 1.5rem;">
+            <h1 style="text-align: center; color: var(--primary-blue); margin-bottom: 0.5rem;">
+                ประวัติการออกกำลังกาย
+            </h1>
+            <p style="text-align: center; color: #666;" id="patientInfo">Loading...</p>
+        </div>
+
+        <!-- Progress Graph -->
+        <div class="staff-form" style="margin-bottom: 1.5rem;">
+            <h2 style="color: var(--primary-blue); margin-bottom: 1rem;">📈 Progress Graph</h2>
+
+            <!-- Metric Selectors -->
+            <div style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="showHeartRate" checked>
+                    <span>Heart Rate</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="showBPSystolic" checked>
+                    <span>BP Systolic</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="showBPDiastolic" checked>
+                    <span>BP Diastolic</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="showMETs" checked>
+                    <span>METs</span>
+                </label>
+            </div>
+
+            <canvas id="progressChart" style="max-height: 400px;"></canvas>
+        </div>
+
+        <!-- Session Selector -->
+        <div class="staff-form">
+            <div class="form-row" style="align-items: center; margin-bottom: 1.5rem;">
+                <div class="form-group" style="flex: 0 0 auto; max-width: 300px;">
+                    <label>Select Session:</label>
+                    <select class="form-input" id="sessionSelector">
+                        <option value="">-- Loading sessions --</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Session Details -->
+            <div id="sessionDetails" style="display: none;">
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Session Information</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div><strong>Date:</strong> <span id="detailDate">-</span></div>
+                        <div><strong>Session #:</strong> <span id="detailNumber">-</span></div>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Vital Signs</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div><strong>Heart Rate:</strong> <span id="detailHR">-</span> BPM</div>
+                        <div><strong>Blood Pressure:</strong> <span id="detailBP">-</span> mmHg</div>
+                        <div><strong>METs:</strong> <span id="detailMETs">-</span></div>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Exercise Details</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Method:</strong>
+                        <p style="margin-top: 0.5rem; white-space: pre-wrap;" id="detailMethod">-</p>
+                    </div>
+                    <div>
+                        <strong>Recommendations:</strong>
+                        <p style="margin-top: 0.5rem; white-space: pre-wrap;" id="detailRec">-</p>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">EKG Graph</h3>
+                    <img id="detailEKG" style="max-width: 100%; border: 1px solid #ddd; border-radius: 8px;"
+                        alt="EKG Graph">
+                </div>
+
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Staff Responsible</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div><strong>Doctor:</strong> <span id="detailDoctor">-</span></div>
+                        <div><strong>Therapist:</strong> <span id="detailTherapist">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="noSessions" style="text-align: center; padding: 3rem; color: #999; display: none;">
+                <p>No exercise sessions recorded yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-column">
+                <img src="../images/logo.png" alt="Ram Hospital" class="footer-logo">
+                <div class="footer-address">
+                    <p>บริษัท โรงพยาบาล รามคำแหง จำกัด (มหาชน) 436</p>
+                    <p>ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ กรุงเทพ 10240</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../javascript/exercise_history.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Cardiac Rehab</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/home.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="../images/logo.png" alt="Ram Hospital Logo" style="height: 60px;cursor: pointer;" id="ram">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../html/login.html">login</a></li>
+                <li><a href="../html/doctor_profile.html">our doctors</a></li>
+                <li><a href="../html/contact_us.html" style="font-weight:bold;">contact us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero-banner">
+        <h1 class="text-4xl font-bold">contact us</h1>
+    </section>
+
+    <div class="container mt-3 mb-3">
+        <div class="flex responsive-stack gap-4" style="align-items: center;">
+            <!-- Left Info -->
+            <div style="flex: 1;">
+                <h2 class="text-2xl mb-1 font-bold">ติดต่อด่วน</h2>
+                <div class="flex items-center gap-2 mb-2">
+                    <span
+                        style="font-size: 2.5rem; background: var(--primary-blue); color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">📞</span>
+                    <span class="text-3xl font-bold text-primary-blue">โทร : 1512</span>
+                </div>
+
+                <div class="mb-2">
+                    <h3 class="about-title" style="font-size: 2.5rem; margin-bottom: 1rem;">location</h3>
+                    <p class="text-xl" style="color: #555;">
+                        บริษัท โรงพยาบาลรามคำแหง จำกัด (มหาชน)<br>
+                        436 ถ.รามคำแหง แขวงหัวหมาก เขตบางกะปิ<br>
+                        กรุงเทพ 10240
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Info & Image -->
+            <div style="flex: 1;">
+                <img src="../images/hospital_building.png" alt="Hospital Building" class="medical-team-img mb-2"
+                    style="width: 100%; height: 250px; object-fit: cover;">
+
+                <div>
+                    <h3 class="about-title" style="font-size: 2.5rem; margin-bottom: 1rem;">number</h3>
+                    <p class="text-xl" style="line-height: 1.8; color: #555;">
+                        Tel. 1512, 02-743-9999<br>
+                        Fax : 0 2374 0804<br>
+                        E-mail : callcenter@ram-hosp.com<br>
+                        ศูนย์หัวใจ 24 ชั่วโมง<br>
+                        083-990-8989
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <!-- Column 1: Logo & Address -->
+            <div class="footer-column">
+                <img src="../images/logo.png" alt="Ram Hospital" class="footer-logo">
+                <div class="footer-address">
+                    <p>บริษัท โรงพยาบาล รามคำแหง จำกัด (มหาชน) 436</p>
+                    <p>ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ</p>
+                    <p>กรุงเทพ 10240</p>
+                </div>
+            </div>
+
+            <!-- Column 2: Additional Services -->
+            <div class="footer-column">
+                <h3 class="footer-title">บริการเพิ่มเติม</h3>
+                <ul class="footer-links">
+                    <li><a href="#">สำหรับพนักงาน</a></li>
+                    <li><a href="#">คำชม</a></li>
+                    <li><a href="#">เอกสาร</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact Channels -->
+            <div class="footer-column">
+                <h3 class="footer-title">ช่องทางติดต่ออื่นๆ</h3>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const ram = document.getElementById('ram');
+        ram.addEventListener('click', () => {
+            window.location.href = '../index.html'
+        })
+    </script>
+</body>
+
+</html>

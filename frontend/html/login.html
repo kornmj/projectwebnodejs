@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Cardiac Rehab Center</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/auth.css">
+</head>
+
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="../images/logo.png" alt="Ram Hospital Logo" style="height: 60px; cursor: pointer;" id="ram">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="login.html" style="font-weight:bold;">login</a></li>
+                <li><a href="doctor_profile.html">our doctors</a></li>
+                <li><a href="contact_us.html">contact us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <h1 class="text-4xl font-bold">Cardiac Rehab Center</h1>
+        <p class="text-xl">ระบบบันทึกและติดตามฟื้นฟูสมรรถภาพหัวใจ</p>
+    </section>
+
+    <!-- Login Card -->
+    <div class="container" style="flex: 1;">
+        <div class="login-card">
+            <h1 class="text-4xl font-bold text-primary-blue mb-2">
+                <span style="border-bottom: 5px solid var(--secondary-blue);">login</span>
+            </h1>
+
+            <form id="loginForm" style="margin-top: 2rem;">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-input" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-input" id="password" placeholder="Enter password" required>
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary text-xl" id="loginBtn" style="width: 200px;">
+                        Login
+                    </button>
+                </div>
+
+                <!-- Error/Success Message Area -->
+                <div id="messageArea" class="mt-2" style="min-height: 30px;">
+                    <!-- Messages will appear here -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <!-- Column 1: Logo & Address -->
+            <div class="footer-column">
+                <img src="../images/logo.png" alt="Ram Hospital" class="footer-logo">
+                <div class="footer-address">
+                    <p>บริษัท โรงพยาบาล รามคำแหง จำกัด (มหาชน) 436</p>
+                    <p>ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ</p>
+                    <p>กรุงเทพ 10240</p>
+                </div>
+            </div>
+
+            <!-- Column 2: Additional Services -->
+            <div class="footer-column">
+                <h3 class="footer-title">บริการเพิ่มเติม</h3>
+                <ul class="footer-links">
+                    <li><a href="#">สำหรับพนักงาน</a></li>
+                    <li><a href="#">คำชม</a></li>
+                    <li><a href="#">เอกสาร</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact Channels -->
+            <div class="footer-column">
+                <h3 class="footer-title">ช่องทางติดต่ออื่นๆ</h3>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../javascript/login.js"></script>
+    <script>
+        // Logo click handler
+        const ram = document.getElementById('ram');
+        ram.addEventListener('click', () => {
+            window.location.href = '../index.html';
+        });
+    </script>
+</body>
+
+</html>

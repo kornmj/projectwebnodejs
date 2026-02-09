@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Exercise Session - Cardiac Rehab</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+</head>
+
+<body style="background-color: #f5f5f5;">
+
+    <div class="header-bg">
+        <h2 id="headerTitle">Record Exercise Session</h2>
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn btn-secondary" onclick="goBack()">Back</button>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 2rem 1rem;">
+        <div class="staff-form">
+            <h1 style="text-align: center; color: var(--primary-blue); margin-bottom: 0.5rem;">
+                บันทึกการออกกำลังกาย
+            </h1>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;" id="patientInfo">Loading...</p>
+
+            <form id="exerciseForm">
+                <!-- Session Info -->
+                <div
+                    style="border-bottom: 2px solid var(--primary-blue); margin-bottom: 1.5rem; padding-bottom: 0.5rem;">
+                    <h2 style="color: var(--primary-blue); font-size: 1.3rem;">Session Information</h2>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>วันที่ออกกำลังกาย <span style="color: red;">*</span></label>
+                        <input type="date" class="form-input" id="sessionDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ครั้งที่ <span style="color: red;">*</span></label>
+                        <input type="number" class="form-input" id="sessionNumber" readonly
+                            style="background-color: #f0f0f0; cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <!-- Vital Signs -->
+                <div
+                    style="border-bottom: 2px solid var(--primary-blue); margin: 2rem 0 1.5rem; padding-bottom: 0.5rem;">
+                    <h2 style="color: var(--primary-blue); font-size: 1.3rem;">Vital Signs</h2>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Heart Rate (BPM) <span style="color: red;">*</span></label>
+                        <input type="number" class="form-input" id="heartRate" min="30" max="220" required>
+                    </div>
+                    <div class="form-group">
+                        <label>BP Systolic (mmHg) <span style="color: red;">*</span></label>
+                        <input type="number" class="form-input" id="bpSystolic" min="60" max="250" required>
+                    </div>
+                    <div class="form-group">
+                        <label>BP Diastolic (mmHg) <span style="color: red;">*</span></label>
+                        <input type="number" class="form-input" id="bpDiastolic" min="40" max="150" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>METs <span style="color: red;">*</span></label>
+                    <input type="number" class="form-input" id="mets" step="0.1" min="0" max="20" required>
+                </div>
+
+                <!-- Exercise Details -->
+                <div
+                    style="border-bottom: 2px solid var(--primary-blue); margin: 2rem 0 1.5rem; padding-bottom: 0.5rem;">
+                    <h2 style="color: var(--primary-blue); font-size: 1.3rem;">Exercise Details</h2>
+                </div>
+
+                <div class="form-group">
+                    <label>วิธีการออกกำลังกาย <span style="color: red;">*</span></label>
+                    <textarea class="form-input" id="exerciseMethod" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>ข้อเสนอแนะสำหรับครั้งถัดไป <span style="color: red;">*</span></label>
+                    <textarea class="form-input" id="recommendations" rows="3" required></textarea>
+                </div>
+
+                <!-- EKG Graph -->
+                <div class="form-group">
+                    <label>EKG Graph (PNG/JPEG, Max 5MB) <span style="color: red;">*</span></label>
+                    <input type="file" class="form-input" id="ekgImage" accept="image/png,image/jpeg" required>
+                    <div id="imagePreview" style="margin-top: 1rem; display: none;">
+                        <img id="previewImg" style="max-width: 300px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <!-- Staff Responsible -->
+                <div
+                    style="border-bottom: 2px solid var(--primary-blue); margin: 2rem 0 1.5rem; padding-bottom: 0.5rem;">
+                    <h2 style="color: var(--primary-blue); font-size: 1.3rem;">Staff Responsible</h2>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Doctor <span style="color: red;">*</span></label>
+                        <select class="form-input" id="doctorId" required>
+                            <option value="">-- Select Doctor --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Physical Therapist <span style="color: red;">*</span></label>
+                        <select class="form-input" id="therapistId" required>
+                            <option value="">-- Select Therapist --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" id="submitBtn"
+                        style="padding: 1rem 3rem; font-size: 1.1rem;">
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-column">
+                <img src="../images/logo.png" alt="Ram Hospital" class="footer-logo">
+                <div class="footer-address">
+                    <p>บริษัท โรงพยาบาล รามคำแหง จำกัด (มหาชน) 436</p>
+                    <p>ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ กรุงเทพ 10240</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../javascript/record_exercise.js"></script>
+</body>
+
+</html>

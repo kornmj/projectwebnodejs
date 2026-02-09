@@ -1,0 +1,93 @@
+/* Authentication & Role Selection Styles */
+
+/* Login Pages */
+.login-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 1.5rem;
+    padding: 3rem;
+    max-width: 600px;
+    margin: 4rem auto;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.login-card .form-input {
+    border-radius: 50px;
+}
+
+.header-strip {
+    background: var(--gradient-header);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Role Selection */
+.role-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.role-card {
+    border: 1px solid #ddd;
+    border-radius: 1rem;
+    padding: 3rem;
+    text-align: center;
+    width: 300px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.role-card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.role-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+/* Auth Responsive */
+@media (max-width: 850px) {
+
+    .role-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .header-strip {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        margin: 2rem 1rem;
+        padding: 2rem 1.5rem;
+        border-radius: 1rem;
+    }
+
+    .role-card {
+        width: 100%;
+        max-width: 100%;
+        padding: 2rem;
+    }
+
+    .role-icon {
+        font-size: 3rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}

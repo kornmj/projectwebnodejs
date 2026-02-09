@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardiac Rehab Center - Ram Hospital</title>
+    <link rel="stylesheet" href="./style/style.css">
+    <link rel="stylesheet" href="./style/home.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="./images/logo.png" alt="Ram Hospital Logo" style="height: 60px; cursor: pointer;" id="ram">
+            <!-- If text is needed next to logo as per mockup, uncomment below, but mockup shows image logo -->
+            <!-- <div class="flex-column">
+                <span class="text-primary-blue font-bold text-xl uppercase">RAM HOSPITAL</span>
+                <span class="text-sm text-dark">โรงพยาบาลรามคำแหง</span>
+            </div> -->
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./html/login.html">login</a></li>
+                <li><a href="html/doctor_profile.html">our doctors</a></li>
+                <li><a href="./html/contact_us.html">contact us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-banner">
+        <h1 class="text-4xl font-bold">patient portal</h1>
+    </section>
+
+    <!-- Content Section -->
+    <div class="container mt-2">
+        <div class="flex responsive-stack items-center justify-between mb-3">
+            <div>
+                <h2 class="section-title">cardiac rehab center</h2>
+                <p class="text-xl text-dark">
+                    Ramkhamhaeng Hospital, access to <br> patient follow-up after heart procedures
+                </p>
+            </div>
+            <div>
+                <img src="./images/medical_team_meeting.png" alt="Medical Team" class="medical-team-img">
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 2rem 0;">
+
+        <!-- About Section -->
+        <div class="flex responsive-stack gap-4">
+            <div style="flex: 0 0 50px;">
+                <h2 class="about-title">about</h2>
+            </div>
+            <div>
+                <p class="text-xl mb-1">What services and information does the patient portal provide?</p>
+                <ul class="about-list">
+                    <li style="text-align: left;">สัญญาณชีพขณะออกจากโรงพยาบาล</li>
+                    <li style="text-align: left;">ประวัติผู้ป่วย</li>
+                    <li style="text-align: left;">บันทึกค่าสุขภาพ (ความดันโลหิต, อัตราการเต้นหัวใจ)</li>
+                    <li style="text-align: left;">บันทึกการออกกำลังกาย (กิจกรรม, ระยะเวลา)</li>
+                    <li style="text-align: left;">หน่วยวัดความหนักการออกกำลังกาย</li>
+                    <li style="text-align: left;">กราฟสถิติการเต้นของหัวใจ</li>
+                    <li style="text-align: left;">กราฟคลื่นหัวใจ</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <!-- Column 1: Logo & Address -->
+            <div class="footer-column">
+                <img src="./images/logo.png" alt="Ram Hospital" class="footer-logo">
+                <div class="footer-address">
+                    <p>บริษัท โรงพยาบาล รามคำแหง จำกัด (มหาชน) 436</p>
+                    <p>ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ</p>
+                    <p>กรุงเทพ 10240</p>
+                </div>
+            </div>
+
+            <!-- Column 2: Additional Services -->
+            <div class="footer-column">
+                <h3 class="footer-title">บริการเพิ่มเติม</h3>
+                <ul class="footer-links">
+                    <li><a href="#">สำหรับพนักงาน</a></li>
+                    <li><a href="#">คำชม</a></li>
+                    <li><a href="#">เอกสาร</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact Channels -->
+            <div class="footer-column">
+                <h3 class="footer-title">ช่องทางติดต่ออื่นๆ</h3>
+                <!-- Add social icons or text here if provided in future, keeping generic header for now as per image -->
+            </div>
+        </div>
+    </footer>
+
+    <script src="./javascript/ram.js"></script>
+</body>
+
+</html>

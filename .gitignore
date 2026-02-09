@@ -1,0 +1,28 @@
+# Ignore database config with sensitive info
+backend/db_config.php
+
+# Ignore uploaded files
+uploads/
+
+# Ignore debug/test files
+backend/test_password.php
+backend/generate_hash.php
+backend/fix_passwords.sql
+backend/fix_passwords_now.php
+backend/api/debug_login.php
+backend/api/check_patients_db.php
+backend/api/test_search.php
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore node modules (if any)
+node_modules/
+
+# Ignore logs
+*.log

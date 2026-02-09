@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Search - Cardiac Rehab</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+</head>
+
+<body style="min-height: 100vh; display: flex; flex-direction: column; background-color: #f5f5f5;">
+
+    <!-- Header -->
+    <div class="header-bg">
+        <h2 class="text-2xl font-bold">Patient Search</h2>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <span id="userName" class="text-xl"></span>
+            <button id="backBtn" class="btn btn-secondary">Back to
+                Dashboard</button>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" style="flex: 1; padding-top: 2rem; padding-bottom: 2rem;">
+        <!-- Search Box -->
+        <div class="staff-form" style="max-width: 800px;">
+            <h1 class="text-3xl font-bold text-primary-blue mb-2" style="text-align: center;">
+                Search Patients
+            </h1>
+
+            <div class="form-group">
+                <label>Search by Phone Number</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" class="form-input" id="searchInput" placeholder="Enter phone number..."
+                        style="flex: 1;">
+                    <button onclick="performSearch()" class="btn btn-primary" style="padding: 0 30px;">Search</button>
+                </div>
+            </div>
+
+            <div id="messageArea" class="mt-1" style="min-height: 20px; text-align: center; color: #666;">
+                <!-- Loading/error messages -->
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="staff-form" style="margin-top: 2rem; max-width: none;">
+            <h3 class="text-2xl font-bold text-primary-blue mb-2">Search Results</h3>
+
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: var(--primary-blue); color: white;">
+                            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Phone</th>
+                            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">First Name</th>
+                            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Last Name</th>
+                            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">National ID</th>
+                            <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Registered Date</th>
+                            <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <tr>
+                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999;">
+                                No patients found. Start typing to search or view all patients.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-column">
+                <img src="../images/logo.png" alt="Ram Hospital" class="footer-logo">
+                <div class="footer-address">
+                    <p>บริษัท โรงพยาบาล รามคำแหง จำกัด (มหาชน) 436</p>
+                    <p>ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ</p>
+                    <p>กรุงเทพ 10240</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../javascript/patient_search.js"></script>
+    <script>
+        // Check authentication
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/check_session');
+                const data = await response.json();
+
+                if (!data.logged_in || !['doctor', 'physical_therapist'].includes(data.role)) {
+                    alert('Access denied. Doctors and therapists only.');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                // Show back button only for doctors
+                if (data.role === 'doctor') {
+                    document.getElementById('backBtn').style.display = 'inline-block';
+                    document.getElementById('backBtn').onclick = () => {
+                        window.location.href = 'doctor_dashboard.html';
+                    };
+                }
+
+                // Set user name
+                document.getElementById('userName').textContent = data.name || 'User';
+            } catch (error) {
+                console.error('Session check error:', error);
+                window.location.href = 'login.html';
+            }
+        });
+
+        function logout() {
+            fetch('/api/logout')
+                .then(() => {
+                    sessionStorage.clear();
+                    window.location.href = 'login.html';
+                });
+        }
+    </script>
+</body>
+
+</html>
