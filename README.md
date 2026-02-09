@@ -3,7 +3,7 @@
 **ระบบติดตามการออกกำลังกายสำหรับผู้ป่วยโรคหัวใจ (Cardiac Rehabilitation System)**
 Web-based application for monitoring and tracking exercise progress of cardiac rehabilitation patients.
 
-🌐 **Live Demo:** [https://lazy-hats-juggle.loca.lt](https://lazy-hats-juggle.loca.lt) *(Temporary Link)*
+
 
 ---
 
@@ -90,14 +90,14 @@ This project can be easily deployed to any Node.js supported platform (e.g., Ren
 ### Staff Login
 | Role | Username | Password |
 |------|----------|----------|
-| **Doctor** | `doctor_somsak` | `password123` |
-| **Therapist** | `therapist_somchai` | `password123` |
+| **Doctor** | `tckys` | `tckys123` |
+| **Therapist** | `phuawonyoung` | `yeddwonyong` |
 
 *(Note: Passwords are hashed with Bcrypt)*
 
 ### Patient Login
 - **Username:** `0812345678` (Phone Number)
-- **Password:** `1234567890123` (National ID - *Used for verification*)
+- **Password:** `1111111111111` (National ID - *Used for verification*)
 
 ---
 
