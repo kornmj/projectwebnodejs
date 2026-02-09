@@ -91,7 +91,7 @@ This project can be easily deployed to any Node.js supported platform (e.g., Ren
 | Role | Username | Password |
 |------|----------|----------|
 | **Doctor** | `tckys` | `tckys123` |
-| **Therapist** | `phuawonyoung` | `yeddwonyong` |
+| **Therapist** | `phuawonyoung` | `yeddwonyoung` |
 
 *(Note: Passwords are hashed with Bcrypt)*
 
