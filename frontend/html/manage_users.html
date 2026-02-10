@@ -202,6 +202,7 @@
                         <select name="role" required>
                             <option value="doctor">Doctor</option>
                             <option value="physical_therapist">Physical Therapist</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
                 </div>
@@ -280,8 +281,16 @@
                             day: 'numeric', month: 'short', year: 'numeric'
                         });
 
-                        const roleBadge = user.role === 'doctor' ? 'doctor' : 'therapist';
-                        const roleName = user.role === 'doctor' ? 'Doctor' : 'Physical Therapist';
+                        let roleBadge = 'doctor';
+                        let roleName = 'Doctor';
+
+                        if (user.role === 'physical_therapist') {
+                            roleBadge = 'therapist';
+                            roleName = 'Physical Therapist';
+                        } else if (user.role === 'admin') {
+                            roleBadge = 'admin';
+                            roleName = 'Admin (Protected)';
+                        }
 
                         tbody.innerHTML += `
                             <tr>

@@ -1,9 +1,6 @@
-# Cardiac Rehab Exercise Tracking System 💓
+# 🏥 Cardiac Rehab System
 
-**ระบบติดตามการออกกำลังกายสำหรับผู้ป่วยโรคหัวใจ (Cardiac Rehabilitation System)**
-Web-based application for monitoring and tracking exercise progress of cardiac rehabilitation patients.
-
-
+ระบบจัดการข้อมูลการฟื้นฟูสมรรถภาพหัวใจ (Cardiac Rehabilitation Management System) พัฒนาด้วย Node.js (Backend) และ Vanilla JS (Frontend)
 
 ---
 
@@ -18,94 +15,67 @@ Web-based application for monitoring and tracking exercise progress of cardiac r
 
 ---
 
-## ✨ Features
+## 🛠️ ขั้นตอนการติดตั้ง (Installation Guide)
 
-### �‍⚕️ For Doctors (Admin)
-- **Patient Management:** Add new patients, view all patient records.
-- **Search System:** Search patients by phone number (with National ID masking for privacy).
-- **Dashboard:** View overall statistics and unread reports.
-- **Progress Tracking:** View patient exercise history and EKG charts.
+### 1. ติดตั้ง Dependencies
+เปิด Terminal ในโฟลเดอร์โครงการ แล้วเข้าไปที่โฟลเดอร์ `backend`:
+```bash
+cd projectwebnodejs/backend
+npm install
+```
 
-### 🧘‍♂️ For Physical Therapists
-- **Record Session:** Input exercise data (Heart Rate, BP, METs, Duration).
-- **EKG Upload:** Upload EKG/ECG images for each session.
-- **Recommendations:** Add specific advice for the next session.
+### 2. การตั้งค่าฐานข้อมูล (Database Setup)
+1. เปิดโปรแกรมจัดการฐานข้อมูล (เช่น MySQL Workbench หรือ phpMyAdmin)
+2. สร้างฐานข้อมูลใหม่ชื่อ `cardiac_rehab_node` (หรือชื่อตามต้องการ)
+3. Import ไฟล์ SQL ตามลำดับดังนี้:
+   - **กรณีติดตั้งทั่วไป:** Import `backend/complete_setup_for_hosting.sql` (ไฟล์เดียวจบ รวมทุก Table และข้อมูลทดสอบ)
+   - **กรณีติดตั้งแยกไฟล์:**
+     1. `backend/database_setup.sql` (สร้างตาราง users, patients และข้อมูลทดสอบ)
+     2. `backend/create_exercise_tables.sql` (สร้างตาราง exercise_sessions และ view)
+     3. `backend/update_patients_table.sql` (อัปเดตโครงสร้างตารางผู้ป่วย)
 
-### 👤 For Patients
-- **Personal Dashboard:** View own exercise history.
-- **Progress Graphs:** Visual charts for Heart Rate, Blood Pressure, and METs.
-- **History Log:** Access past exercise sessions and doctor recommendations.
+### 3. ตั้งค่า Environment Variables (`.env`)
+สร้างไฟล์ `.env` ในโฟลเดอร์ `backend/` และกำหนดค่าดังนี้:
+```env
+PORT=3000
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=your_password
+DB_NAME=cardiac_rehab_node
+SESSION_SECRET=your_secret_key
+```
 
 ---
 
-## 🛠️ Technology Stack
-- **Frontend:** HTML5, CSS3 (Vanilla), JavaScript, Chart.js
-- **Backend:** Node.js, Express.js
-- **Database:** MySQL
-- **Hosting:** Localhost (or Node.js supported hosting)
+## 🚀 การรันระบบ (Launch Website)
 
----
-
-## 🚀 Installation (Local Development)
-
-### Prerequisites
-- Node.js (v14+)
-- MySQL
-- Git
-
-### Steps
-1. **Clone Repository**
+1. ในโฟลเดอร์ `backend/` รันคำสั่ง:
    ```bash
-   git clone https://github.com/kornmj/projectwebnodejs.git
-   cd web-project-
-   ```
-
-2. **Setup Database**
-   - Import `backend/complete_setup_for_hosting.sql` to MySQL.
-   - Configure `backend/config/db.js` (or `db_config.js`) if needed.
-
-3. **Install & Run**
-   ```bash
-   cd backend
-   npm install
    node server.js
    ```
-   - Access: `http://localhost:3000`
-
-## ☁️ Deployment (Cloud Hosting)
-
-This project can be easily deployed to any Node.js supported platform (e.g., Render, Railway, Heroku).
-
-1. **Push to GitHub**
-2. **Connect Repository to Hosting Service**
-3. **Configure Environment Variables:**
-   - `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
-4. **Build Command:** `npm install`
-5. **Start Command:** `node server.js`
+2. เข้าใช้งานผ่าน Browser ที่ URL: `http://localhost:3000`
 
 ---
 
-## 🔑 Demo Credentials
+## 👥 คู่มือการใช้งานแยกตามสิทธิ์ (User Guide)
 
-### Staff Login
-| Role | Username | Password |
-|------|----------|----------|
-| **Doctor** | `tckys` | `tckys123` |
-| **Therapist** | `phuawonyoung` | `yeddwonyoung` |
+### 👨‍⚕️ สิทธิ์: แพทย์ (Doctor)
+- **เข้าสู่ระบบ:** ใช้ Username และ Password ที่กำหนด (เช่น `doctor_somsak` / `password123`)
+- **จัดการผู้ใช้:** สามารถเพิ่ม แก้ไข หรือลบข้อมูล หมอ และ นักกายภาพบำบัด ได้ในเมนู Management
+- **เพิ่มข้อมูลผู้ป่วย:** กรอกรายละเอียดผู้ป่วยใหม่ (ชื่อ, เบอร์โทร, เลขบัตรประชาชน, อาการ, ประวัติการรักษา)
+- **ดูประวัติ:** ติดตามผลการออกกำลังกายของผู้ป่วยทุกคนในระบบ
 
-*(Note: Passwords are hashed with Bcrypt)*
+### ⛹️‍♂️ สิทธิ์: นักกายภาพบำบัด (Physical Therapist)
+- **เข้าสู่ระบบ:** ใช้ Username และ Password ที่กำหนด (เช่น `therapist_somchai` / `password123`)
+- **บันทึกกิจกรรม:** บันทึกข้อมูลการออกกำลังกาย (Heart Rate, Blood Pressure, METs, วิธีการออกกำลังกาย)
+- **อัปโหลด EKG:** สามารถอัปโหลดรูปภาพผล EKG เพื่อประกอบการบันทึก
+- **คำแนะนำ:** ให้คำแนะนำสำหรับเซสชันถัดไป
 
-### Patient Login
-- **Username:** `0812345678` (Phone Number)
-- **Password:** `1111111111111` (National ID - *Used for verification*)
+### 🤒 สิทธิ์: ผู้ป่วย (Patient)
+- **เข้าสู่ระบบ:**
+  - **Username:** หมายเลขโทรศัพท์ (Phone Number)
+  - **Password:** เลขบัตรประจำตัวประชาชน 13 หลัก (National ID)
+- **ดูข้อมูลส่วนตัว:** ตรวจสอบข้อมูลประวัติสุขภาพของตนเอง
+- **ดูประวัติการออกกำลังกาย:** ดูรายละเอียดที่นักกายภาพบันทึกไว้ และอ่านคำแนะนำในการปฏิบัติตัว
 
 ---
-
-## 🔒 Security Features
-- **Privacy:** National IDs are masked in search results (e.g., `1-2345-678XX-XX-X`).
-- **Authentication:** Role-based access control (Doctor, Therapist, Patient) via Express Sessions.
-- **Protection:** SQL Injection prevention (MySQL2 Prepared Statements), Password Hashing (Bcrypt).
-- **Configuration:** Environment-based database configuration (`backend/db_config.js`).
-
----
-**Last Updated:** February 9, 2026

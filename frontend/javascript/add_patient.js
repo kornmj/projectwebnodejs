@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const phone = document.getElementById('phone').value.trim();
         const firstName = document.getElementById('firstName').value.trim();
         const lastName = document.getElementById('lastName').value.trim();
+        const gender = document.getElementById('gender').value;
         const nationalId = document.getElementById('nationalId').value.trim();
 
         // Medical History
@@ -28,6 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // CPET
         const cpetCompleted = document.getElementById('cpetCompleted').checked;
+
+
+        if (!gender) {
+            showMessage('Please select a gender', 'error');
+            return;
+        }
 
         // Validate Thai National ID (exactly 13 digits)
         if (!/^\d{13}$/.test(nationalId)) {
@@ -77,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     phone: phone,
                     first_name: firstName,
                     last_name: lastName,
+                    gender: gender,
                     national_id: nationalId,
                     symptoms: symptoms,
                     procedure_history: procedureHistory,

@@ -128,32 +128,48 @@ function initChart() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
             plugins: {
                 legend: {
                     position: 'top',
+                    align: 'center',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'line'
+                        boxWidth: 6,
+                        padding: 10,
+                        font: { size: 11 }
                     }
                 },
                 title: {
                     display: true,
-                    text: 'Exercise Progress Over Time',
+                    text: 'Exercise Progress',
                     font: { size: 16 }
+                },
+                tooltip: {
+                    bodyFont: { size: 13 },
+                    titleFont: { size: 13 }
                 }
             },
             scales: {
                 x: {
                     title: {
                         display: true,
-                        text: 'Session Number'
+                        text: 'Session',
+                        font: { size: 12 }
+                    },
+                    ticks: {
+                        font: { size: 11 }
                     }
                 },
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        precision: 0
+                        precision: 0,
+                        font: { size: 11 }
                     }
                 }
             }

@@ -24,7 +24,17 @@ router.post('/login', async (req, res) => {
 
         // 2. If not found, try 'patients' table
         if (!user) {
-            [rows] = await db.query('SELECT patient_id as user_id, phone as username, password, first_name, last_name FROM patients WHERE phone = ?', [username]);
+            [rows] = await db.query(`
+                SELECT 
+                    pa.patient_id as user_id, 
+                    pa.phone as username, 
+                    pa.password, 
+                    pi.first_name, 
+                    pi.last_name 
+                FROM patient_auth pa
+                LEFT JOIN patient_info pi ON pa.patient_id = pi.patient_id
+                WHERE pa.phone = ?
+            `, [username]);
             user = rows[0];
             userType = 'patient';
             if (user) user.role = 'patient';

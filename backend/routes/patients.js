@@ -42,13 +42,13 @@ function validateThaiNationalId(id) {
 // POST /api/add_patient
 router.post('/add_patient', isAuthenticated, isDoctor, async (req, res) => {
     const {
-        phone, first_name, last_name, national_id,
+        phone, first_name, last_name, gender, national_id,
         symptoms, procedure_history, weight, height, age,
         cpet_completed
     } = req.body;
 
     // Validate required fields
-    if (!phone || !first_name || !last_name || !national_id) {
+    if (!phone || !first_name || !last_name || !national_id || !gender) {
         return res.status(400).json({ success: false, message: 'Missing required fields' });
     }
 
@@ -57,44 +57,71 @@ router.post('/add_patient', isAuthenticated, isDoctor, async (req, res) => {
         return res.status(400).json({ success: false, message: 'National ID must be exactly 13 digits' });
     }
 
+    const connection = await db.getConnection();
+
     try {
-        // Check availability
-        const [existingPhone] = await db.query('SELECT patient_id FROM patients WHERE phone = ?', [phone]);
+        await connection.beginTransaction();
+
+        // 1. Check availability
+        const [existingPhone] = await connection.query('SELECT patient_id FROM patient_auth WHERE phone = ?', [phone]);
         if (existingPhone.length > 0) {
+            await connection.rollback();
             return res.status(409).json({ success: false, message: 'Phone number already registered' });
         }
 
-        const [existingId] = await db.query('SELECT patient_id FROM patients WHERE national_id = ?', [national_id]);
+        const [existingId] = await connection.query('SELECT patient_id FROM patient_info WHERE national_id = ?', [national_id]);
         if (existingId.length > 0) {
+            await connection.rollback();
             return res.status(409).json({ success: false, message: 'National ID already registered' });
         }
 
-        // Hash national_id as password
+        // 2. Hash national_id as password
         const hashedPassword = await bcrypt.hash(national_id, 10);
 
-        // Insert
-        const [result] = await db.query(`
-            INSERT INTO patients (
-                phone, national_id, password, first_name, last_name, 
-                symptoms, procedure_history, weight, height, age, 
-                cpet_completed, created_by
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [
-            phone, national_id, hashedPassword, first_name, last_name,
-            symptoms || null, procedure_history || null, weight || null, height || null, age || null,
-            cpet_completed ? 1 : 0, req.session.user.user_id
-        ]);
+        // 3. Insert into patient_auth
+        const [authResult] = await connection.query(
+            'INSERT INTO patient_auth (phone, password) VALUES (?, ?)',
+            [phone, hashedPassword]
+        );
+        const patientId = authResult.insertId;
+
+        // 4. Insert into patient_info
+        await connection.query(
+            'INSERT INTO patient_info (patient_id, national_id, first_name, last_name, gender, created_by) VALUES (?, ?, ?, ?, ?, ?)',
+            [patientId, national_id, first_name, last_name, gender, req.session.user.user_id]
+        );
+
+        // 5. Insert into patient_medical_history
+        await connection.query(
+            `INSERT INTO patient_medical_history (
+                patient_id, symptoms, procedure_history, weight, height, age, cpet_completed
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [
+                patientId,
+                symptoms || null,
+                procedure_history || null,
+                weight || null,
+                height || null,
+                age || null,
+                cpet_completed ? 1 : 0
+            ]
+        );
+
+        await connection.commit();
 
         res.json({
             success: true,
             message: 'Patient added successfully',
-            patient_id: result.insertId,
+            patient_id: patientId,
             patient: { phone, first_name, last_name }
         });
 
     } catch (err) {
+        await connection.rollback();
         console.error('Add Patient Error:', err);
         res.status(500).json({ success: false, message: 'Server error', error: err.message });
+    } finally {
+        connection.release();
     }
 });
 
@@ -107,12 +134,13 @@ router.post('/delete_patient', isAuthenticated, isDoctor, async (req, res) => {
     }
 
     try {
-        const [patient] = await db.query('SELECT first_name, last_name FROM patients WHERE patient_id = ?', [patient_id]);
+        const [patient] = await db.query('SELECT first_name, last_name FROM patient_info WHERE patient_id = ?', [patient_id]);
         if (patient.length === 0) {
             return res.status(404).json({ success: false, message: 'Patient not found' });
         }
 
-        await db.query('DELETE FROM patients WHERE patient_id = ?', [patient_id]);
+        // Deleting from patient_auth will cascade to patient_info and patient_medical_history
+        await db.query('DELETE FROM patient_auth WHERE patient_id = ?', [patient_id]);
 
         res.json({
             success: true,
@@ -135,7 +163,12 @@ router.get('/get_patient', isAuthenticated, async (req, res) => {
     }
 
     try {
-        const [rows] = await db.query('SELECT patient_id, phone, first_name, last_name, national_id FROM patients WHERE patient_id = ?', [patientId]);
+        const [rows] = await db.query(`
+            SELECT pa.patient_id, pa.phone, pi.first_name, pi.last_name, pi.national_id, pi.gender 
+            FROM patient_auth pa
+            JOIN patient_info pi ON pa.patient_id = pi.patient_id
+            WHERE pa.patient_id = ?
+        `, [patientId]);
 
         if (rows.length === 0) {
             return res.status(404).json({ success: false, message: 'Patient not found' });
@@ -144,7 +177,7 @@ router.get('/get_patient', isAuthenticated, async (req, res) => {
         const patient = rows[0];
         const nid = patient.national_id;
         // Mask ID: 1-2345-XXXXX-XX-X
-        patient.masked_id = `${nid[0]}-${nid.substring(1, 5)}-${nid.substring(5, 10).replace(/\d/g, 'X')}-XX-X`;
+        patient.masked_id = nid ? `${nid[0]}-${nid.substring(1, 5)}-${nid.substring(5, 10).replace(/\d/g, 'X')}-XX-X` : 'N/A';
         delete patient.national_id;
 
         res.json({ success: true, patient });
@@ -166,14 +199,15 @@ router.get('/search_patients', isAuthenticated, isStaff, async (req, res) => {
     try {
         const [patients] = await db.query(`
             SELECT 
-                p.patient_id, p.phone, p.first_name, p.last_name, p.national_id, p.created_at,
+                pa.patient_id, pa.phone, pi.first_name, pi.last_name, pi.national_id, pi.gender, pa.created_at,
                 CONCAT(u.first_name, ' ', u.last_name) as created_by_name
-            FROM patients p
-            LEFT JOIN users u ON p.created_by = u.user_id
-            WHERE p.phone LIKE ?
-            ORDER BY p.created_at DESC
+            FROM patient_auth pa
+            JOIN patient_info pi ON pa.patient_id = pi.patient_id
+            LEFT JOIN users u ON pi.created_by = u.user_id
+            WHERE pa.phone LIKE ? OR pi.first_name LIKE ? OR pi.last_name LIKE ?
+            ORDER BY pa.created_at DESC
             LIMIT 100
-        `, [`%${query}%`]);
+        `, [`%${query}%`, `%${query}%`, `%${query}%`]);
 
         // Mask IDs
         patients.forEach(p => {

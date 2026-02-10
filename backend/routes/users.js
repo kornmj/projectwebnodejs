@@ -80,16 +80,72 @@ router.post('/users/delete', async (req, res) => {
         return res.status(400).json({ success: false, message: 'Username required' });
     }
 
+    const connection = await db.getConnection();
     try {
-        const [result] = await db.query('DELETE FROM users WHERE username = ?', [username]);
+        await connection.beginTransaction();
 
-        if (result.affectedRows > 0) {
-            res.json({ success: true, message: `User '${username}' deleted` });
-        } else {
-            res.status(404).json({ success: false, message: `User '${username}' not found` });
+        // Check if user exists
+        const [users] = await connection.query('SELECT user_id, role FROM users WHERE username = ?', [username]);
+        if (users.length === 0) {
+            await connection.rollback();
+            return res.status(404).json({ success: false, message: `User '${username}' not found` });
         }
+        const userId = users[0].user_id;
+        const userRole = users[0].role;
+
+        // Prevent deletion of 'admin' role
+        if (userRole === 'admin') {
+            await connection.rollback();
+            return res.status(403).json({ success: false, message: 'Cannot delete a user with Admin role.' });
+        }
+
+        // Update references to NULL (or a specific system user if preferred)
+        // Update references to 'admin' user or System Admin
+        // 1. Find the admin user (username = 'admin')
+        const [admins] = await connection.query('SELECT user_id FROM users WHERE username = ?', ['admin']);
+        let adminId = null;
+
+        if (admins.length > 0) {
+            adminId = admins[0].user_id;
+        } else {
+            // Fallback: If no 'admin' user, find ANY user to be the placeholder (e.g. ID 1)
+            const [anyAdmin] = await connection.query('SELECT user_id FROM users ORDER BY user_id ASC LIMIT 1');
+            if (anyAdmin.length > 0) adminId = anyAdmin[0].user_id;
+        }
+
+        if (adminId && adminId !== userId) {
+            // Reassign exercise sessions
+            await connection.query('UPDATE exercise_sessions SET doctor_id = ? WHERE doctor_id = ?', [adminId, userId]);
+            await connection.query('UPDATE exercise_sessions SET therapist_id = ? WHERE therapist_id = ?', [adminId, userId]);
+
+            // Reassign patient info
+            await connection.query('UPDATE patient_info SET created_by = ? WHERE created_by = ?', [adminId, userId]);
+        } else {
+            // If strictly no other user exists to take over, or self-deletion of last admin:
+            // Allow NULL for sessions as fallback
+            await connection.query('UPDATE exercise_sessions SET doctor_id = NULL WHERE doctor_id = ?', [userId]);
+            await connection.query('UPDATE exercise_sessions SET therapist_id = NULL WHERE therapist_id = ?', [userId]);
+
+            // For patient_info, check if we are deleting the last user who owns data. 
+            // If created_by is NOT NULL constraint exists, this will fail if we don't have an adminId.
+            if (!adminId) {
+                await connection.rollback();
+                return res.status(400).json({ success: false, message: 'Cannot delete user: No Admin user found to transfer data to.' });
+            }
+        }
+
+        // Now delete the user
+        const [result] = await connection.query('DELETE FROM users WHERE user_id = ?', [userId]);
+
+        await connection.commit();
+        res.json({ success: true, message: `User '${username}' deleted successfully` });
+
     } catch (err) {
-        res.status(500).json({ success: false, message: 'Failed to delete user' });
+        await connection.rollback();
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Failed to delete user: ' + err.message });
+    } finally {
+        connection.release();
     }
 });
 
