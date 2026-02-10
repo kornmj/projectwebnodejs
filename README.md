@@ -8,10 +8,10 @@
 
 | Student ID | Name | Role |
 |------------|------|------|
-| 67026225 | โนชมานิต โกสม | Developer |
-| 67021781 | ธัชกร แย้มสังข์ | Developer |
-| 67022209 | ศรรวริชญ์ นิยมสัตย์ | Developer |
-| 67021983 | พัชรพล วราโภค | Developer |
+| 67026225 | โนชมานิต โกสม | Backend Developer |
+| 67021781 | ธัชกร แย้มสังข์ | Frontend Developer |
+| 67022209 | ศรรวริชญ์ นิยมสัตย์ | Frontend Developer |
+| 67021983 | พัชรพล วราโภค | Backend Developer |
 
 ---
 
