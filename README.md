@@ -26,22 +26,32 @@ npm install
 
 ### 2. การตั้งค่าฐานข้อมูล (Database Setup)
 1. เปิดโปรแกรมจัดการฐานข้อมูล (เช่น MySQL Workbench หรือ phpMyAdmin)
-2. สร้างฐานข้อมูลใหม่ชื่อ `cardiac_rehab_node` (หรือชื่อตามต้องการ)
-3. Import ไฟล์ SQL ตามลำดับดังนี้:
-   - **กรณีติดตั้งทั่วไป:** Import `backend/complete_setup_for_hosting.sql` (ไฟล์เดียวจบ รวมทุก Table และข้อมูลทดสอบ)
-   - **กรณีติดตั้งแยกไฟล์:**
-     1. `backend/database_setup.sql` (สร้างตาราง users, patients และข้อมูลทดสอบ)
-     2. `backend/create_exercise_tables.sql` (สร้างตาราง exercise_sessions และ view)
-     3. `backend/update_patients_table.sql` (อัปเดตโครงสร้างตารางผู้ป่วย)
+2. สร้างฐานข้อมูลใหม่ชื่อ `cardiacrehabdb`
+3. Import ไฟล์ SQL:
+   - **`backend/cardiacrehabdb.sql`** (ไฟล์นี้รวมโครงสร้าง Table และข้อมูลเริ่มต้นทั้งหมดแล้ว)
 
-### 3. ตั้งค่า Environment Variables (`.env`)
+### 3. โครงสร้างฐานข้อมูล (Database Schema)
+> ดูรายละเอียดโครงสร้างตารางและความสัมพันธ์ได้ที่: **[Database Schema Documentation](database_schema.md)**
+
+```mermaid
+erDiagram
+    USERS ||--o{ PATIENT_INFO : "creates"
+    USERS ||--o{ EXERCISE_SESSIONS : "conducts"
+    PATIENT_AUTH ||--|| PATIENT_INFO : "profile"
+    PATIENT_AUTH ||--o{ EXERCISE_SESSIONS : "performs"
+    USERS { string username string role }
+    PATIENT_AUTH { string phone string password }
+    PATIENT_INFO { string national_id string name }
+```
+
+### 4. ตั้งค่า Environment Variables (`.env`)
 สร้างไฟล์ `.env` ในโฟลเดอร์ `backend/` และกำหนดค่าดังนี้:
 ```env
 PORT=3000
 DB_HOST=localhost
 DB_USER=root
 DB_PASS=your_password
-DB_NAME=cardiac_rehab_node
+DB_NAME=cardiacrehabdb
 SESSION_SECRET=your_secret_key
 ```
 

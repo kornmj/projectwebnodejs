@@ -4,7 +4,7 @@ const mysql = require('mysql2/promise');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 async function migrate() {
-    const sqlPath = 'C:\\Users\\marno\\OneDrive\\เดสก์ท็อป\\Com Eng 2025\\2-2025\\web programing\\cardiac_final\\backend\\cardiac_rehab_5tables.sql';
+    const sqlPath = path.join(__dirname, '../cardiacrehabdb.sql');
     console.log(`Reading SQL file from: ${sqlPath}`);
 
     try {
@@ -18,7 +18,8 @@ async function migrate() {
 
         console.log('Connected to MySQL server.');
 
-        // Re-create database to ensure clean state or just use existing
+        // Re-create database to ensure clean state
+        await connection.query(`DROP DATABASE IF EXISTS \`${process.env.DB_NAME}\`;`);
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME}\`;`);
         await connection.query(`USE \`${process.env.DB_NAME}\`;`);
 
